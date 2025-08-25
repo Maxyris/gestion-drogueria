@@ -1,0 +1,31 @@
+spring:
+    application:
+        name: ms-medicamentos
+        consul:
+            host: localhost
+            port: 8500
+            discovery:
+                instanceId: ${spring.application.name}:${server.port}
+                preferIpAddress: true
+                health-check-timeout: 10s
+                heartbeat:
+                    enabled: true
+    datasource:
+        url: jdbc:oracle:thin:@localhost:1521:ORCLCDB
+        username: ORCLCDB
+        password: Oracle123
+        driver-class-name: oracle.jdbc.OracleDriver
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.OracleDialect
+                default_schema: ORCLCDB
+
+server:
+    port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'health'

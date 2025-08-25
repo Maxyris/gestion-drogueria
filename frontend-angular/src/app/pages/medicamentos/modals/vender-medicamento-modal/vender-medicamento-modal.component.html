@@ -1,0 +1,21 @@
+<main>
+  <h3>Vender medicamento {{ ref.data.nombre}}</h3>
+
+  <div class="form-group">
+    <p-floatlabel variant="in">
+      <input [formControl]="inputCantidad" pInputText id="cantidad" autocomplete="off" type="number" step="1" />
+      <label for="cantidad">Cantidad a vender</label>
+    </p-floatlabel>
+
+    <span>
+      <b>Total a pagar:</b>
+      {{ ref.data.valorUnitario * (inputCantidad.value ?? 0) | currency }}
+    </span>
+  </div>
+
+  <div class="buttons">
+    <p-button severity="secondary" (click)="ref.close(0)">Cancelar</p-button>
+
+    <p-button severity="success" [disabled]="inputCantidad.invalid" (click)="ref.close(inputCantidad.value ?? 0)">Confirmar</p-button>
+  </div>
+</main>

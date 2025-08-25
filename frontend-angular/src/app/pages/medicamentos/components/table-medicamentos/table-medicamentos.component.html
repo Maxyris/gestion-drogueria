@@ -1,0 +1,146 @@
+<p-table
+  #dt1
+  [value]="medicamentos.value().data?.content ?? []"
+  dataKey="id"
+  [rows]="2"
+  [rowsPerPageOptions]="[2, 10, 15]"
+  [totalRecords]="totalRegistros()"
+  [loading]="medicamentos.isLoading()"
+  [paginator]="true"
+  (onPage)="paginarMedicamentos($event)"
+  [globalFilterFields]="[
+    'nombre',
+    'laboratorio',
+    'fechaFabricacion',
+    'fechaVencimiento'
+  ]"
+  showGridlines
+  styleClass="p-datatable-sm"
+>
+  <ng-template #caption>
+    <div class="header-table">
+      <p-button
+        label="Limpiar"
+        [outlined]="true"
+        icon="pi pi-filter-slash"
+        size="small"
+        (click)="dt1.clear()"
+      />
+
+      <p-iconfield iconPosition="left" class="ml-auto">
+        <p-inputicon>
+          <i class="pi pi-search"></i>
+        </p-inputicon>
+        <input
+          pInputText
+          type="text"
+          (input)="dt1.filterGlobal($event.target.value, 'contains')"
+          placeholder="Buscar medicamento..."
+        />
+      </p-iconfield>
+
+      <p-button label="Crear medicamento" icon="pi pi-plus" (click)="crearMedicamento()" />
+    </div>
+  </ng-template>
+
+  <ng-template #header>
+    <tr>
+      <th style="min-width: 12rem">
+        <div class="flex items-center justify-between">
+          Nombre
+          <p-columnFilter type="text" field="nombre" display="menu" />
+        </div>
+      </th>
+      <th style="min-width: 12rem">
+        <div class="flex items-center justify-between">
+          Laboratorio
+          <p-columnFilter type="text" field="laboratorio" display="menu" />
+        </div>
+      </th>
+      <th style="min-width: 10rem">
+        <div class="flex items-center justify-between">
+          F. Fabricación
+          <p-columnFilter type="date" field="fechaFabricacion" display="menu" />
+        </div>
+      </th>
+      <th style="min-width: 10rem">
+        <div class="flex items-center justify-between">
+          F. Vencimiento
+          <p-columnFilter type="date" field="fechaVencimiento" display="menu" />
+        </div>
+      </th>
+      <th style="min-width: 8rem">
+        <div class="flex items-center justify-between">
+          Stock
+          <p-columnFilter type="numeric" field="cantidadStock" display="menu" />
+        </div>
+      </th>
+      <th style="min-width: 8rem">
+        <div class="flex items-center justify-between">
+          Precio
+          <p-columnFilter
+            type="numeric"
+            field="valorUnitario"
+            display="menu"
+            currency="USD"
+          />
+        </div>
+      </th>
+      <th style="min-width: 8rem">
+        <div class="flex items-center justify-between">Acciones</div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-product>
+    <tr>
+      <td>
+        {{ product.nombre }}
+      </td>
+      <td>
+        {{ product.laboratorio }}
+      </td>
+      <td>
+        {{ product.fechaFabricacion | date : "dd/MM/yyyy" }}
+      </td>
+      <td>
+        {{ product.fechaVencimiento | date : "dd/MM/yyyy" }}
+      </td>
+      <td>
+        {{ product.cantidadStock }}
+      </td>
+      <td>
+        {{ product.valorUnitario | currency : "USD" : "symbol" }}
+      </td>
+      <td>
+        <p-button label="Vender" severity="success" variant="text" [raised]="true"
+          icon="pi pi-check" (click)="venderMedicamento(product)"/>
+
+        <p-button
+          severity="info"
+          variant="text"
+          [raised]="true"
+          icon="pi pi-pencil"
+          size="small"
+          pTooltip="Editar"
+          (click)="editarMedicamento(product)"
+        />
+        <p-button
+          severity="danger"
+          variant="text"
+          [raised]="true"
+          icon="pi pi-trash"
+          size="small"
+          pTooltip="Eliminar"
+          (click)="eliminarMedicamento(product)"
+        />
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="7">No se encontraron medicamentos.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmdialog />

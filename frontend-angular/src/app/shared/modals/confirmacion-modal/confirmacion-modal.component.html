@@ -1,0 +1,11 @@
+<main>
+  <h3>{{ ref.data.titulo }}</h3>
+
+  <p class="text-center">{{ ref.data.mensaje }}</p>
+
+  <div class="buttons">
+    <p-button severity="secondary" (click)="ref.close(false)">Cancelar</p-button>
+
+    <p-button severity="success" (click)="ref.close(true)">Confirmar</p-button>
+  </div>
+</main>

@@ -1,0 +1,36 @@
+spring:
+    application:
+        name: ms-gateway
+    cloud:
+        gateway:
+            routes:
+                - id: ms-medicamentos
+                  uri: lb://ms-medicamentos
+                  predicates:
+                  - Path=/medicamentos/**
+                - id: ms-ventas
+                  uri: lb://ms-ventas
+                  predicates:
+                  - Path=/ventas/**
+            globalcors:
+                corsConfigurations:
+                    '[/**]':
+                        allowedOrigins:
+                            - "*"
+                        allowedMethods:
+                            - "*"
+                        allowedHeaders:
+                            - "*"
+        consul:
+            host: localhost
+            port: 8500
+            discovery:
+                instanceId: ${spring.application.name}:${server.port}
+                preferIpAddress: true
+                health-check-timeout: 10s
+                heartbeat:
+                    enabled: true
+
+
+server:
+    port: 8080

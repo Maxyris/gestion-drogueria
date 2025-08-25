@@ -1,0 +1,44 @@
+<main>
+  <h3>{{ ref.data ? 'Editar' : 'Crear' }} medicamento</h3>
+
+  <div class="form-group" [formGroup]="formGroup">
+    <p-floatlabel variant="in">
+      <input formControlName="nombre" pInputText id="nombre" autocomplete="off" />
+      <label for="nombre">Nombre</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="in">
+      <input formControlName="laboratorio" pInputText id="laboratorio" autocomplete="off" />
+      <label for="laboratorio">Laboratorio</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="in">
+      <input #inputFB class="hidden" type="date" (change)="fechaFabricacion?.setValue($event.target.value)" />
+      <input formControlName="fechaFabricacion" pInputText
+        id="fechaFabricacion" autocomplete="off" (click)="inputFB.showPicker()" (focus)="inputFB.showPicker()" readonly/>
+      <label for="fechaFabricacion">Fecha de fabricación</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="in">
+      <input #inputFV class="hidden" type="date" (change)="fechaVencimiento?.setValue($event.target.value)" />
+      <input formControlName="fechaVencimiento" (click)="inputFV.showPicker()" (focus)="inputFV.showPicker()"
+        pInputText id="fechaVencimiento" autocomplete="off" type="text" readonly/>
+      <label for="fechaVencimiento">Fecha de vencimiento</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="in">
+      <input formControlName="valorUnitario" pInputText id="valorUnitario" autocomplete="off" />
+      <label for="valorUnitario">Valor unitario</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="in">
+      <input formControlName="cantidad" pInputText id="cantidad" autocomplete="off" />
+      <label for="cantidad">Cantidad</label>
+    </p-floatlabel>
+  </div>
+
+  <div class="buttons">
+    <p-button label="Cancelar" (click)="ref.close()" severity="secondary" />
+    <p-button label="Guardar" (click)="ref.close(formGroup.value)" [disabled]="formGroup.invalid" />
+  </div>
+</main>

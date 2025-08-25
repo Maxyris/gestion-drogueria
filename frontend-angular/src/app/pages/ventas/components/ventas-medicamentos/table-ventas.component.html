@@ -1,0 +1,99 @@
+<p-table #dt1 [value]="ventas.value().data?.content ?? []" dataKey="id" [rows]="2"
+  [rowsPerPageOptions]="[2, 10, 15]"
+  [totalRecords]="totalRegistros()"
+  [loading]="ventas.isLoading()"
+  [paginator]="true"
+  (onPage)="paginarVentas($event)"
+  [globalFilterFields]="['fechaHora', 'idMedicamento', 'cantidad', 'valorTotal', 'valorUnitario']"
+  showGridlines styleClass="p-datatable-sm">
+    <ng-template #caption>
+        <div class="header-table" [formGroup]="formFiltros">
+            <p-button label="Limpiar" [outlined]="true" icon="pi pi-filter-slash" size="small" (click)="dt1.clear()" />
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Buscar medicamento..." />
+            </p-iconfield>
+
+            <p-iconfield variant="in">
+              <p-inputicon>
+                <i class="pi pi-calendar"></i>
+              </p-inputicon>
+              <input #inputFI class="hidden" type="date" (change)="fechaInicio?.setValue($event.target.value)" />
+              <input pInputText
+                formControlName="fechaInicio"
+                size="small" autocomplete="off" (click)="openDatePicker(inputFI)" (focus)="openDatePicker(inputFI)"
+                placeholder="Fecha inicio" readonly/>
+            </p-iconfield>
+
+            <p-iconfield variant="in">
+              <p-inputicon>
+                <i class="pi pi-calendar"></i>
+              </p-inputicon>
+              <input #inputFF class="hidden" type="date" (change)="fechaFin?.setValue($event.target.value)" />
+              <input formControlName="fechaFin" (click)="openDatePicker(inputFF)" (focus)="openDatePicker(inputFF)"
+                pInputText autocomplete="off" type="text"
+                placeholder="Fecha fin" readonly/>
+            </p-iconfield>
+        </div>
+    </ng-template>
+    <ng-template #header>
+        <tr>
+            <th style="min-width:12rem">
+                <div class="flex items-center justify-between">
+                    Fecha y hora
+                    <p-columnFilter type="text" field="fechaHora" display="menu" />
+                </div>
+            </th>
+            <th style="min-width:12rem">
+                <div class="flex items-center justify-between">
+                    Medicamento
+                    <p-columnFilter type="text" field="idMedicamento" display="menu" />
+                </div>
+            </th>
+            <th style="min-width:10rem">
+                <div class="flex items-center justify-between">
+                    Cantidad
+                    <p-columnFilter type="numeric" field="cantidad" display="menu" />
+                </div>
+            </th>
+            <th style="min-width:10rem">
+                <div class="flex items-center justify-between">
+                    Valor total
+                    <p-columnFilter type="numeric" field="valorTotal" display="menu" />
+                </div>
+            </th>
+            <th style="min-width:8rem">
+                <div class="flex items-center justify-between">
+                    Valor unitario
+                    <p-columnFilter type="numeric" field="valorUnitario" display="menu" />
+                </div>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template #body let-product>
+        <tr>
+            <td>
+                {{ product.fechaHora | date: 'dd/MM/yyyy HH:mm' }}
+            </td>
+            <td>
+                {{ product.nombreMedicamento }}
+            </td>
+            <td>
+                {{ product.cantidadVenta }}
+            </td>
+            <td>
+                {{ product.valorTotal | currency }}
+            </td>
+            <td>
+                {{ product.valorUnitario | currency }}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+        <tr>
+            <td colspan="7">No se encontraron medicamentos.</td>
+        </tr>
+    </ng-template>
+</p-table>
